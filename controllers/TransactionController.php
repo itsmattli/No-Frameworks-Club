@@ -55,9 +55,7 @@ class TransactionController {
             try {
                 $result = $db->query($query);
             } catch (mysqli_sql_exception $e) {
-                $response = array(
-                    'error' => $e->getMessage());
-                Response::send(400, $response);
+                Response::error(400, $e->getMessage());
             }
             $row = $result->fetch_assoc();
             $response = array(
@@ -76,9 +74,7 @@ class TransactionController {
      */
     public static function validate($params) {
         if(isset($params->UserId) && count((array) $params) != 1) {
-            $response = array(
-                'error' => 'incorrect parametres provided in POST request');
-            Response::send(400, $response);
+            Response::error(400, "Incorrect body provided in POST Request");
         } else {
             return true;
         }

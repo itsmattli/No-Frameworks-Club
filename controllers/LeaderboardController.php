@@ -70,9 +70,7 @@ class LeaderboardController {
         try {
             $result = $db->query($query);
         } catch (mysqli_sql_exception $e) {
-            $response = array(
-                'error' => $e->getMessage());
-            Response::send(400, $response);
+            Response::error(400, $e->getMessage());
         }
         $entries = array();
         while($row = $result->fetch_assoc()) {
@@ -103,12 +101,7 @@ class LeaderboardController {
         try {
             $result = mysqli_query($db, $query);
         } catch (mysqli_sql_exception $e) {
-            $response = array(
-                'error' => $e->getMessage());
-            http_response_code(400);
-            header('Content-Type: application/json');
-            $db->close();
-            die(json_encode($response));
+            Response::error(400, $e->getMessage());
         }
         $row = mysqli_fetch_assoc($result);
         $userScore = array (

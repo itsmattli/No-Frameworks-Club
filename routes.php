@@ -2,6 +2,9 @@
 if(file_exists('../controllers/includes.php')) {
     require_once('../controllers/includes.php');
 }
+if(file_exists('../utils/Response.php')) {
+    require_once('../utils/Response.php');
+}
 
 /**
  * Class Router routes incoming requests base on URI
@@ -12,7 +15,7 @@ class Router {
      * Parses incoming requests for Routing
      * @param $query
      */
-    public function parse($query, $method, $body) {
+    public function parse($query, $method, $body, $authorization) {
         $params = explode('/', $query);
         switch(strtolower($params[0])) {
             case 'timestamp':
@@ -36,8 +39,11 @@ class Router {
             case 'userload':
                 $this->userLoad($method, $body);
                 break;
+            case 'data':
+                $this->data($method, $body, $authorization);
+                break;
             default:
-                http_response_code(404);
+                Response::error(404, "Not Found");
                 break;
         }
     }
@@ -48,7 +54,7 @@ class Router {
      */
     public function timestamp($method) {
         if ($method != 'GET') {
-            http_response_code(405);
+            Response::error(405, "Method Not Allowed");
         } else {
             TimestampController::index();
         }
@@ -62,7 +68,7 @@ class Router {
      */
     public function transaction($method, $body) {
         if ($method != 'POST') {
-            http_response_code(405);
+            Response::error(405, "Method Not Allowed");
         } else {
             TransactionController::transaction($body);
         }
@@ -76,7 +82,7 @@ class Router {
      */
     public function transactionStats($method, $body) {
         if ($method != 'POST') {
-            http_response_code(405);
+            Response::error(405, "Method Not Allowed");
         } else {
             TransactionController::transactionStats($body);
         }
@@ -89,7 +95,7 @@ class Router {
      */
     public function scorePost($method, $body) {
         if ($method != 'POST') {
-            http_response_code(405);
+            Response::error(405, "Method Not Allowed");
         } else {
             LeaderboardController::scorePost($body);
         }
@@ -102,7 +108,7 @@ class Router {
      */
     public function leaderboardGet($method, $body) {
         if ($method != 'POST') {
-            http_response_code(405);
+            Response::error(405, "Method Not Allowed");
         } else {
             LeaderboardController::leaderboardGet($body);
         }
@@ -115,7 +121,7 @@ class Router {
      */
     public function userSave($method, $body) {
         if ($method != 'POST') {
-            http_response_code(405);
+            Response::error(405, "Method Not Allowed");
         } else {
             UserController::userSave($body);
         }
@@ -128,9 +134,19 @@ class Router {
      */
     public function userLoad($method, $body) {
         if ($method != 'POST') {
-            http_response_code(405);
+            Response::error(405, "Method Not Allowed");
         } else {
             UserController::userLoad($body);
+        }
+    }
+
+    public function data($method, $authorization) {
+        if($method == 'DELETE') {
+            DataController::delete($authorization);
+        } else if ($method == 'POST') {
+            DataController::create($authorization);
+        } else {
+            Response::error(405, "Method Not Allowed");
         }
     }
 }

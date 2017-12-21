@@ -14,3 +14,7 @@ if(file_exists('../controllers/LeaderboardController.php')) {
 if(file_exists('../controllers/UserController.php')) {
     require_once('../controllers/UserController.php');
 }
+
+if(file_exists('../controllers/DataController.php')) {
+    require_once('../controllers/DataController.php');
+}

@@ -47,9 +47,7 @@ class UserController {
         try {
             $result = $db->query($query);
         } catch (mysqli_sql_exception $e) {
-            $response = array(
-                'error' => $e->getMessage());
-            Response::send(400, $response);
+            Response::error(400, $e->getMessage());
         }
 
         if($result->num_rows == 0){

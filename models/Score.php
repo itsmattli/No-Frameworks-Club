@@ -49,9 +49,7 @@ class Score{
                 try {
                     mysqli_query($db, $query);
                 } catch (mysqli_sql_exception $e) {
-                    $response = array(
-                        'error' => $e->getMessage());
-                    Response::send(400, $response);
+                    Response::error(400, $e->getMessage());
                 }
             }
         } else {
@@ -62,9 +60,7 @@ class Score{
             try {
                 mysqli_query($db, $query);
             } catch (mysqli_sql_exception $e) {
-                $response = array(
-                    'error' => $e->getMessage());
-                Response::send(400, $response);
+                Response::error(400, $e->getMessage());
             }
         }
     }
@@ -84,9 +80,7 @@ class Score{
         try {
             $result = $db->query($query);
         } catch (mysqli_sql_exception $e) {
-            $response = array(
-                'error' => $e->getMessage());
-            Response::send(400, $response);
+            Response::error(400, $e->getMessage());
         }
         $row = $result->fetch_assoc();
         if($row) {
