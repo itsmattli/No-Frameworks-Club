@@ -1,3 +1,3 @@
 # No-Frameworks-Club
 
-!(No Homer's Club)[/images/nhc.jpg "No Homer's Club"]
+![enter image description here](https://github.com/itsmattli/No-Frameworks-Club/blob/develop/images/nhc.jpg?raw=true)

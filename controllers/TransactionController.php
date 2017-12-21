@@ -4,6 +4,14 @@ if(file_exists('../models/Transaction.php')){
     include_once('../models/Transaction.php');
 }
 
+if(file_exists('../utils/dbConnection.php')) {
+    include_once('../utils/dbConnection.php');
+}
+
+if(file_exists('../utils/Response.php')) {
+    include_once('../utils/Response.php');
+}
+
 /**
  * Establish DB Connection
  */
@@ -28,7 +36,7 @@ class TransactionController {
         if($transaction->save()) {
             $response = array(
                 'Success' => true);
-            echo json_encode($response);
+            Response::send(200, $response);
         }
     }
 
@@ -41,44 +49,30 @@ class TransactionController {
         global $db;
         $params = json_decode($body);
         if (self::validate($params)) {
-            if (isset($params->UserId)) {
-                $query = "SELECT COUNT(transactionId) AS TransactionCount, SUM(currencyAmount) AS CurrencySum
-                FROM transactions
-                WHERE userId ='" . $params->UserId . "'";
-                try {
-                    $result = mysqli_query($db, $query);
-                } catch (mysqli_sql_exception $e) {
-                    $response = array(
-                        'error' => $e->getMessage());
-                    http_response_code(400);
-                    header('Content-Type: application/json');
-                    die(json_encode($response));
-                }
-                $row = mysqli_fetch_array($result);
+            $query = "SELECT COUNT(transactionId) AS TransactionCount, SUM(currencyAmount) AS CurrencySum
+              FROM transactions
+              WHERE userId ='" . $params->UserId . "'";
+            try {
+                $result = $db->query($query);
+            } catch (mysqli_sql_exception $e) {
                 $response = array(
-                    'TransactionCount' => $row['TransactionCount'],
-                    'CurrencySum' => ($row['CurrencySum']) ? $row['CurrencySum'] : 0
-                );
-                http_response_code(200);
-                header('Content-Type: application/json');
-                die(json_encode($response));
+                    'error' => $e->getMessage());
+                Response::send(400, $response);
             }
+            $row = $result->fetch_assoc();
+            $response = array(
+                'TransactionCount' => $row['TransactionCount'],
+                'CurrencySum' => ($row['CurrencySum']) ? $row['CurrencySum'] : 0
+            );
+            Response::send(200, $response);
         }
     }
 
     public static function validate($params) {
-        if(count((array) $params) != 1) {
+        if(isset($params->UserId) && count((array) $params) != 1) {
             $response = array(
-                'error' => 'too many parameters provided in POST request');
-            http_response_code(400);
-            header('Content-Type: application/json');
-            die(json_encode($response));
-        } else if(!filter_var($params->UserId, FILTER_VALIDATE_INT)) {
-            $response = array(
-                'error' => 'userId must be an integer');
-            http_response_code(400);
-            header('Content-Type: application/json');
-            die(json_encode($response));
+                'error' => 'incorrect parametres provided in POST request');
+            Response::send(400, $response);
         } else {
             return true;
         }

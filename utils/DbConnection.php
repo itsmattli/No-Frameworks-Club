@@ -11,11 +11,13 @@ Class DbConnection{
 
     private $db;
     private function __construct() {
-        $this->db = mysqli_connect(self::$servername, self::$username, self::$password, self::$dbname);
+        $this->db = new mysqli(self::$servername, self::$username, self::$password, self::$dbname);
     }
 
     public static function getConnection() {
         if (self::$instance === null) {
+            $driver = new mysqli_driver();
+            $driver->report_mode = MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT;
             self::$instance = new self();
         }
         return self::$instance->db;
