@@ -24,6 +24,9 @@ class Router {
             case 'transactionstats':
                 $this->transactionStats($method,$body);
                 break;
+            case 'scorepost':
+                $this->scorePost($method, $body);
+                break;
             default:
                 http_response_code(404);
                 break;
@@ -31,7 +34,7 @@ class Router {
     }
 
     /**
-     * Selects appropriate method for GET /Timestamp
+     * Selects appropriate function for GET /Timestamp
      * @param $method
      * @param $body
      */
@@ -43,6 +46,12 @@ class Router {
         }
     }
 
+    /**
+     * Calls appropriate function for POST /Transaction
+     *
+     * @param $method
+     * @param $body
+     */
     public function transaction($method, $body) {
         if ($method != 'POST') {
             http_response_code(405);
@@ -51,11 +60,25 @@ class Router {
         }
     }
 
+    /**
+     * Calls appropriate function for POST /TransactionStats
+     *
+     * @param $method
+     * @param $body
+     */
     public function transactionStats($method, $body) {
         if ($method != 'POST') {
             http_response_code(405);
         } else {
             TransactionController::transactionStats($body);
+        }
+    }
+
+    public function scorePost($method, $body) {
+        if ($method != 'POST') {
+            http_response_code(405);
+        } else {
+            LeaderboardController::scorePost($body);
         }
     }
 }

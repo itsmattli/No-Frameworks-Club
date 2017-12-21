@@ -41,41 +41,33 @@ class TransactionController {
         global $db;
         $params = json_decode($body);
         if (self::validate($params)) {
-            if (isset($params->UserId)) {
-                $query = "SELECT COUNT(transactionId) AS TransactionCount, SUM(currencyAmount) AS CurrencySum
-                FROM transactions
-                WHERE userId ='" . $params->UserId . "'";
-                try {
-                    $result = mysqli_query($db, $query);
-                } catch (mysqli_sql_exception $e) {
-                    $response = array(
-                        'error' => $e->getMessage());
-                    http_response_code(400);
-                    header('Content-Type: application/json');
-                    die(json_encode($response));
-                }
-                $row = mysqli_fetch_array($result);
+            $query = "SELECT COUNT(transactionId) AS TransactionCount, SUM(currencyAmount) AS CurrencySum
+              FROM transactions
+              WHERE userId ='" . $params->UserId . "'";
+            try {
+                $result = mysqli_query($db, $query);
+            } catch (mysqli_sql_exception $e) {
                 $response = array(
-                    'TransactionCount' => $row['TransactionCount'],
-                    'CurrencySum' => ($row['CurrencySum']) ? $row['CurrencySum'] : 0
-                );
-                http_response_code(200);
+                    'error' => $e->getMessage());
+                http_response_code(400);
                 header('Content-Type: application/json');
                 die(json_encode($response));
             }
+            $row = mysqli_fetch_assoc($result);
+            $response = array(
+                'TransactionCount' => $row['TransactionCount'],
+                'CurrencySum' => ($row['CurrencySum']) ? $row['CurrencySum'] : 0
+            );
+            http_response_code(200);
+            header('Content-Type: application/json');
+            die(json_encode($response));
         }
     }
 
     public static function validate($params) {
-        if(count((array) $params) != 1) {
+        if(isset($params->UserId) && count((array) $params) != 1) {
             $response = array(
-                'error' => 'too many parameters provided in POST request');
-            http_response_code(400);
-            header('Content-Type: application/json');
-            die(json_encode($response));
-        } else if(!filter_var($params->UserId, FILTER_VALIDATE_INT)) {
-            $response = array(
-                'error' => 'userId must be an integer');
+                'error' => 'incorrect parametres provided in POST request');
             http_response_code(400);
             header('Content-Type: application/json');
             die(json_encode($response));

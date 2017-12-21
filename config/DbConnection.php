@@ -11,7 +11,7 @@ Class DbConnection{
 
     private $db;
     private function __construct() {
-        $this->db = mysqli_connect(self::$servername, self::$username, self::$password, self::$dbname);
+        $this->db = new mysqli(self::$servername, self::$username, self::$password, self::$dbname);
     }
 
     public static function getConnection() {
