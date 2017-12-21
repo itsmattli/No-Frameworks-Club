@@ -1,10 +1,10 @@
 <?php
 
-class Timestamp {
+class TimestampController {
     public static function index() {
-        $response['status'] = 'Success';
         $response['Timestamp'] = time();
+        http_response_code(200);
         header('Content-Type: application/json');
-        echo json_encode($response);
+        die(json_encode($response));
     }
 }

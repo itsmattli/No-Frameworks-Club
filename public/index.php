@@ -8,12 +8,12 @@ include('../routes.php');
  */
 $router = new Router();
 
-$request_method = $_SERVER["REQUEST_METHOD"];
+$method = $_SERVER["REQUEST_METHOD"];
 $route = $_REQUEST['q'];
-if ($request_method == 'POST') {
+if ($method == 'POST') {
     $body = file_get_contents('php://input');
 } else {
     $body = null;
 }
 
-$router->parse($route, $request_method, $body);
+$router->parse($route, $method, $body);
