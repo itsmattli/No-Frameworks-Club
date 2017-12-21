@@ -1,7 +1,11 @@
 <?php
 
-if(file_exists('../config/dbConnection.php')) {
-    include_once('../config/dbConnection.php');
+if(file_exists('../utils/dbConnection.php')) {
+    include_once('../utils/dbConnection.php');
+}
+
+if(file_exists('../utils/Response.php')) {
+    include_once('../utils/Response.php');
 }
 
 /**
@@ -37,9 +41,7 @@ class Score{
                 } catch (mysqli_sql_exception $e) {
                     $response = array(
                         'error' => $e->getMessage());
-                    http_response_code(400);
-                    header('Content-Type: application/json');
-                    die(json_encode($response));
+                    Response::send(400, $response);
                 }
             }
         } else {
@@ -52,9 +54,7 @@ class Score{
             } catch (mysqli_sql_exception $e) {
                 $response = array(
                     'error' => $e->getMessage());
-                http_response_code(400);
-                header('Content-Type: application/json');
-                die(json_encode($response));
+                Response::send(400, $response);
             }
         }
     }
@@ -72,15 +72,13 @@ class Score{
             WHERE userId = '" . $userId . "' AND
             leaderboardId = '" . $leaderboardId . "'";
         try {
-            $result = mysqli_query($db, $query);
+            $result = $db->query($query);
         } catch (mysqli_sql_exception $e) {
             $response = array(
                 'error' => $e->getMessage());
-            http_response_code(400);
-            header('Content-Type: application/json');
-            die(json_encode($response));
+            Response::send(400, $response);
         }
-        $row = mysqli_fetch_assoc($result);
+        $row = $result->fetch_assoc();
         if($row) {
             return new Score($row['userId'], $row['leaderboardId'], $row['score']);
         } else {

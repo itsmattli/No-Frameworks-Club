@@ -16,6 +16,8 @@ Class DbConnection{
 
     public static function getConnection() {
         if (self::$instance === null) {
+            $driver = new mysqli_driver();
+            $driver->report_mode = MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT;
             self::$instance = new self();
         }
         return self::$instance->db;
