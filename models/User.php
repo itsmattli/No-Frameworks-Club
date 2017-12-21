@@ -1,7 +1,7 @@
 <?php
 
-if(file_exists('../utils/dbConnection.php')) {
-    require_once('../utils/dbConnection.php');
+if(file_exists('../utils/DbConnection.php')) {
+    require_once('../utils/DbConnection.php');
 }
 
 if(file_exists('../utils/Response.php')) {
@@ -64,7 +64,7 @@ class User {
 
     public function load($userId, $dataKey) {
         global $db;
-        $query = "SELECT * from Users
+        $query = "SELECT * from users
             WHERE userId = '" . $userId . "' AND
             dataKey = '" . $dataKey . "'";
         try {

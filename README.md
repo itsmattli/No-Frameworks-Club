@@ -14,5 +14,5 @@
 - Create one configuration file with all settings and keys
     
 ###Extra
-- [Postman Collection and Documentation](https://www.placeholder.com)
+- [Postman Collection and Documentation](https://documenter.getpostman.com/view/1994094/collection/7Ln9MzC)
 - .sql files for the database are included in /data
