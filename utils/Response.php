@@ -26,6 +26,12 @@ class Response {
         die(json_encode($response));
     }
 
+    /**
+     * Sends an error response with a standardized JSON error message
+     *
+     * @param $code
+     * @param $message
+     */
     public static function error($code, $message) {
         global $db;
         if($db) {

@@ -39,6 +39,11 @@ class UserController {
         Response::send(200, $response);
     }
 
+    /**
+     * Loads a user's data key and values.
+     *
+     * @param $body
+     */
     public static function userLoad($body) {
         global $db;
         $params = json_decode($body);
