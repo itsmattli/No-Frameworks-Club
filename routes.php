@@ -15,7 +15,7 @@ class Router {
      * Parses incoming requests for Routing
      * @param $query
      */
-    public function parse($query, $method, $body, $authorization) {
+    public function parse($query, $method, $body, $auth) {
         $params = explode('/', $query);
         switch(strtolower($params[0])) {
             case 'timestamp':
@@ -40,7 +40,7 @@ class Router {
                 $this->userLoad($method, $body);
                 break;
             case 'data':
-                $this->data($method, $body, $authorization);
+                $this->data($method, $auth);
                 break;
             default:
                 Response::error(404, "Not Found");
@@ -140,11 +140,11 @@ class Router {
         }
     }
 
-    public function data($method, $authorization) {
+    public function data($method, $auth) {
         if($method == 'DELETE') {
-            DataController::delete($authorization);
+            DataController::delete($auth);
         } else if ($method == 'POST') {
-            DataController::create($authorization);
+            DataController::create($auth);
         } else {
             Response::error(405, "Method Not Allowed");
         }

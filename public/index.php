@@ -18,9 +18,9 @@ if ($method == 'POST') {
 
 //Check for Authorization headers
 $headers = apache_request_headers();
-$authorization = null;
+$auth = null;
 if(isset($headers['Authorization'])){
-    $authorization = $headers['Authorization'];
+    $auth = $headers['Authorization'];
 }
 
-$router->parse($route, $method, $body, $authorization);
+$router->parse($route, $method, $body, $auth);
