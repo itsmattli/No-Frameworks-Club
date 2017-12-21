@@ -27,18 +27,20 @@ class Score{
         mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
         $oldScore = $this->load($this->userId, $this->leaderboardId);
         if($oldScore) {
-            $query = "UPDATE leaderboards 
+            if($oldScore->score < $this->score) {
+                $query = "UPDATE leaderboards 
                 SET score = '" . $this->score . "'
                 WHERE userId = '" . $this->userId . "' AND
-                leaderboardId = '" . $this->leaderboardId ."'";
-            try {
-                mysqli_query($db, $query);
-            } catch (mysqli_sql_exception $e) {
-                $response = array(
-                    'error' => $e->getMessage());
-                http_response_code(400);
-                header('Content-Type: application/json');
-                die(json_encode($response));
+                leaderboardId = '" . $this->leaderboardId . "'";
+                try {
+                    mysqli_query($db, $query);
+                } catch (mysqli_sql_exception $e) {
+                    $response = array(
+                        'error' => $e->getMessage());
+                    http_response_code(400);
+                    header('Content-Type: application/json');
+                    die(json_encode($response));
+                }
             }
         } else {
             $query = "INSERT INTO leaderboards VALUES ("
