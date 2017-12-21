@@ -1,11 +1,6 @@
 <?php
 include('../routes.php');
-/**
- * Created by PhpStorm.
- * User: Matthew
- * Date: 2017-12-20
- * Time: 4:37 PM
- */
+
 $router = new Router();
 
 $method = $_SERVER["REQUEST_METHOD"];

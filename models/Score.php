@@ -1,11 +1,11 @@
 <?php
 
 if(file_exists('../utils/dbConnection.php')) {
-    include_once('../utils/dbConnection.php');
+    require_once('../utils/dbConnection.php');
 }
 
 if(file_exists('../utils/Response.php')) {
-    include_once('../utils/Response.php');
+    require_once('../utils/Response.php');
 }
 
 /**
@@ -13,19 +13,29 @@ if(file_exists('../utils/Response.php')) {
  */
 $db = DbConnection::getConnection();
 
-//@TODO close DB CONN
-
+/**
+ * Class Score represents one row in the leaderboards table.
+ */
 class Score{
     var $userId;
     var $leaderboardId;
     var $score;
 
+    /**
+     * Score constructor.
+     * @param $userId
+     * @param $leaderboardId
+     * @param $score
+     */
     public function __construct($userId, $leaderboardId, $score){
         $this->userId = $userId;
         $this->leaderboardId = $leaderboardId;
         $this->score = $score;
     }
 
+    /**
+     * Stores score information in the database
+     */
     public function save() {
         global $db;
         mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);

@@ -1,6 +1,6 @@
 <?php
 if(file_exists('../utils/dbConnection.php')) {
-    include_once('../utils/dbConnection.php');
+    require_once('../utils/dbConnection.php');
 }
 
 /**
@@ -8,6 +8,10 @@ if(file_exists('../utils/dbConnection.php')) {
  */
 $db = DbConnection::getConnection();
 
+
+/**
+ * Class Response formats responses and closes the database after before script concludes
+ */
 class Response {
     public static function send($code, $response){
         global $db;
