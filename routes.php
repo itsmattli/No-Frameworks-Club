@@ -32,6 +32,10 @@ class Router {
                 break;
             case 'usersave':
                 $this->userSave($method, $body);
+                break;
+            case 'userload':
+                $this->userLoad($method, $body);
+                break;
             default:
                 http_response_code(404);
                 break;
@@ -41,7 +45,6 @@ class Router {
     /**
      * Selects appropriate function for GET /Timestamp
      * @param $method
-     * @param $body
      */
     public function timestamp($method) {
         if ($method != 'GET') {
@@ -115,6 +118,19 @@ class Router {
             http_response_code(405);
         } else {
             UserController::userSave($body);
+        }
+    }
+
+    /**
+     * Calls appropriate function for POST /UserLoad
+     * @param $method
+     * @param $body
+     */
+    public function userLoad($method, $body) {
+        if ($method != 'POST') {
+            http_response_code(405);
+        } else {
+            UserController::userLoad($body);
         }
     }
 }

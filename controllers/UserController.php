@@ -13,6 +13,11 @@ if(file_exists('../utils/Response.php')) {
 }
 
 /**
+ * Establish DB Connection
+ */
+$db = DbConnection::getConnection();
+
+/**
 * Class UserController offers static functions relating to users
 */
 class UserController {
@@ -32,5 +37,33 @@ class UserController {
             'Success' => true
         );
         Response::send(200, $response);
+    }
+
+    public static function userLoad($body) {
+        global $db;
+        $params = json_decode($body);
+        $query = "SELECT * from Users
+            WHERE userId = '" . $params->UserId . "'";
+        try {
+            $result = $db->query($query);
+        } catch (mysqli_sql_exception $e) {
+            $response = array(
+                'error' => $e->getMessage());
+            Response::send(400, $response);
+        }
+
+        if($result->num_rows == 0){
+            $response = [];
+            Response::sendForceObject(200, $response);
+        } else {
+            $response['UserId'] = $params->UserId;
+            $response['Data'] = array();
+            while($row = $result->fetch_assoc()) {
+                $dataKey = $row['dataKey'];
+                $data = json_decode($row['data']);
+                $response['Data'][$dataKey] = $data;
+            }
+            Response::sendForceObject(200, $response);
+        }
     }
 }
