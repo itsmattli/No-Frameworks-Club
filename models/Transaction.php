@@ -62,15 +62,11 @@ class Transaction {
             try {
                 $db->query($query);
             } catch (mysqli_sql_exception $e) {
-                $response = array(
-                    'error' => $e->getMessage());
-                Response::send(400, $response);
+                Response::error(400, $e->getMessage());
             }
             return true;
         } else {
-            $response = array(
-                'error' => 'improper verifier string');
-            Response::send(400, $response);
+            Response::error(400, 'Verifier String Incorrect');
         }
     }
 }

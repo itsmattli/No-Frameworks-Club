@@ -47,9 +47,7 @@ class User {
             try {
                 $db->query($query);
             } catch (mysqli_sql_exception $e) {
-                $response = array(
-                    'error' => $e->getMessage());
-                Response::send(400, $response);
+                Response::error(400, $e->getMessage());
             }
         } else {
             $query = "INSERT INTO users VALUES ("
@@ -59,9 +57,7 @@ class User {
             try {
                 $db->query($query);
             } catch (mysqli_sql_exception $e) {
-                $response = array(
-                    'error' => $e->getMessage());
-                Response::send(400, $response);
+                Response::error(400, $e->getMessage());
             }
         }
     }
@@ -74,9 +70,7 @@ class User {
         try {
             $result = $db->query($query);
         } catch (mysqli_sql_exception $e) {
-            $response = array(
-                'error' => $e->getMessage());
-            Response::send(400, $response);
+            Response::error(400, $e->getMessage());
         }
         $row = $result->fetch_assoc();
         if($row) {
