@@ -16,8 +16,21 @@ class Router {
         $params = explode('/', $query);
         switch(strtolower($params[0])) {
             case 'timestamp':
-                Timestamp::index();
+                $this->timestamp($method,$body);
                 break;
+        }
+    }
+
+    /**
+     * Selects appropriate method for GET /Timestamp
+     * @param $method
+     * @param $body
+     */
+    public function timestamp($method, $body) {
+        if ($method != 'GET') {
+            header("HTTP/1.0 405 Method Not Allowed");
+        } else {
+            Timestamp::index();
         }
     }
 }
