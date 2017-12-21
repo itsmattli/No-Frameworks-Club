@@ -3,6 +3,9 @@ if(file_exists('../controllers/includes.php')) {
     require_once('../controllers/includes.php');
 }
 
+/**
+ * Class Router routes incoming requests base on URI
+ */
 class Router {
 
     /**
@@ -16,16 +19,22 @@ class Router {
                 $this->timestamp($method);
                 break;
             case 'transaction':
-                $this->transaction($method,$body);
+                $this->transaction($method, $body);
                 break;
             case 'transactionstats':
-                $this->transactionStats($method,$body);
+                $this->transactionStats($method, $body);
                 break;
             case 'scorepost':
                 $this->scorePost($method, $body);
                 break;
             case 'leaderboardget':
-                $this->leaderboardget($method,$body);
+                $this->leaderboardget($method, $body);
+                break;
+            case 'usersave':
+                $this->userSave($method, $body);
+                break;
+            case 'userload':
+                $this->userLoad($method, $body);
                 break;
             default:
                 http_response_code(404);
@@ -36,7 +45,6 @@ class Router {
     /**
      * Selects appropriate function for GET /Timestamp
      * @param $method
-     * @param $body
      */
     public function timestamp($method) {
         if ($method != 'GET') {
@@ -97,6 +105,32 @@ class Router {
             http_response_code(405);
         } else {
             LeaderboardController::leaderboardGet($body);
+        }
+    }
+
+    /**
+     * Calls appropriate function for POST /UserSave
+     * @param $method
+     * @param $body
+     */
+    public function userSave($method, $body) {
+        if ($method != 'POST') {
+            http_response_code(405);
+        } else {
+            UserController::userSave($body);
+        }
+    }
+
+    /**
+     * Calls appropriate function for POST /UserLoad
+     * @param $method
+     * @param $body
+     */
+    public function userLoad($method, $body) {
+        if ($method != 'POST') {
+            http_response_code(405);
+        } else {
+            UserController::userLoad($body);
         }
     }
 }

@@ -1,18 +1,21 @@
 <?php
 if(file_exists('../models/Score.php')){
-    include_once('../models/Score.php');
+    require_once('../models/Score.php');
 }
 if(file_exists('../utils/dbConnection.php')) {
-    include_once('../utils/dbConnection.php');
+    require_once('../utils/dbConnection.php');
 }
 if(file_exists('../utils/Response.php')) {
-    include_once('../utils/Response.php');
+    require_once('../utils/Response.php');
 }
 /**
  * Establish DB Connection
  */
 $db = DbConnection::getConnection();
 
+/**
+ * Class LeaderboardController offers static functions related to the leaderboard
+ */
 class LeaderboardController {
 
     /**
@@ -31,6 +34,11 @@ class LeaderboardController {
         Response::send(200, $response);
     }
 
+    /**
+     * Gets leaderboard ranking of passed in UserId and LeaderboardId as well as extra entries
+     * based on offset and limit (starting with rank 1)
+     * @param $body
+     */
     public static function leaderboardGet($body) {
         $params = json_decode($body);
         $response = self::getScoreWithRank($params->UserId, $params->LeaderboardId);
@@ -38,6 +46,15 @@ class LeaderboardController {
         Response::send(200, $response);
     }
 
+    /**
+     * Helper function that returns Leaderboard of a specific LeaderboardId with a specified
+     * offset and limit
+     *
+     * @param $leaderboardId
+     * @param $offset
+     * @param $limit
+     * @return array
+     */
     public static function getLeaderboardWithRank($leaderboardId, $offset, $limit) {
         global $db;
         $query = "SELECT userId, score, 
@@ -64,6 +81,13 @@ class LeaderboardController {
         return $entries;
     }
 
+    /**
+     * Gets score and rank of passed in userId and leaderboardId
+     *
+     * @param $userId
+     * @param $leaderboardId
+     * @return array
+     */
     public static function getScoreWithRank($userId, $leaderboardId) {
         global $db;
         $query = "SELECT userId, leaderboardId, score, 

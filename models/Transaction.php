@@ -1,11 +1,11 @@
 <?php
 
 if(file_exists('../utils/dbConnection.php')) {
-    include_once('../utils/dbConnection.php');
+    require_once('../utils/dbConnection.php');
 }
 
 if(file_exists('../utils/Response.php')) {
-    include_once('../utils/Response.php');
+    require_once('../utils/Response.php');
 }
 
 /**
@@ -13,6 +13,9 @@ if(file_exists('../utils/Response.php')) {
  */
 $db = DbConnection::getConnection();
 
+/**
+ * Class Transaction represents one row in the Transactions table.
+ */
 class Transaction {
     const SECRET_KEY = "NwvprhfBkGuPJnjJp77UPJWJUpgC7mLz";
     var $transactionId;
@@ -65,7 +68,6 @@ class Transaction {
             }
             return true;
         } else {
-
             $response = array(
                 'error' => 'improper verifier string');
             Response::send(400, $response);

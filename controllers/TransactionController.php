@@ -1,15 +1,15 @@
 <?php
 
 if(file_exists('../models/Transaction.php')){
-    include_once('../models/Transaction.php');
+    require_once('../models/Transaction.php');
 }
 
 if(file_exists('../utils/dbConnection.php')) {
-    include_once('../utils/dbConnection.php');
+    require_once('../utils/dbConnection.php');
 }
 
 if(file_exists('../utils/Response.php')) {
-    include_once('../utils/Response.php');
+    require_once('../utils/Response.php');
 }
 
 /**
@@ -68,6 +68,12 @@ class TransactionController {
         }
     }
 
+    /**
+     * Validates post parameters for transactionStats
+     *
+     * @param $params
+     * @return bool
+     */
     public static function validate($params) {
         if(isset($params->UserId) && count((array) $params) != 1) {
             $response = array(
