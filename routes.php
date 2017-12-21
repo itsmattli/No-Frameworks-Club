@@ -140,6 +140,12 @@ class Router {
         }
     }
 
+    /**
+     * Calls appropriate methods for Truncating all data or Seeding data in the database
+     *
+     * @param $method
+     * @param $auth
+     */
     public function data($method, $auth) {
         if($method == 'DELETE') {
             DataController::delete($auth);

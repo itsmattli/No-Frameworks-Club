@@ -62,6 +62,13 @@ class User {
         }
     }
 
+    /**
+     * Attempts to load a User entry by userId and dataKey
+     *
+     * @param $userId
+     * @param $dataKey
+     * @return null|User
+     */
     public function load($userId, $dataKey) {
         global $db;
         $query = "SELECT * from users
