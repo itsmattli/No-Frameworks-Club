@@ -4,8 +4,8 @@ if(file_exists('../models/User.php')){
     require_once('../models/User.php');
 }
 
-if(file_exists('../utils/dbConnection.php')) {
-    require_once('../utils/dbConnection.php');
+if(file_exists('../utils/DbConnection.php')) {
+    require_once('../utils/DbConnection.php');
 }
 
 if(file_exists('../utils/Response.php')) {
@@ -42,7 +42,7 @@ class UserController {
     public static function userLoad($body) {
         global $db;
         $params = json_decode($body);
-        $query = "SELECT * from Users
+        $query = "SELECT * from users
             WHERE userId = '" . $params->UserId . "'";
         try {
             $result = $db->query($query);

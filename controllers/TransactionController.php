@@ -4,8 +4,8 @@ if(file_exists('../models/Transaction.php')){
     require_once('../models/Transaction.php');
 }
 
-if(file_exists('../utils/dbConnection.php')) {
-    require_once('../utils/dbConnection.php');
+if(file_exists('../utils/DbConnection.php')) {
+    require_once('../utils/DbConnection.php');
 }
 
 if(file_exists('../utils/Response.php')) {

@@ -1,6 +1,6 @@
 <?php
-if(file_exists('../utils/dbConnection.php')) {
-    require_once('../utils/dbConnection.php');
+if(file_exists('../utils/DbConnection.php')) {
+    require_once('../utils/DbConnection.php');
 }
 
 /**

@@ -1,7 +1,7 @@
 <?php
 
-if(file_exists('../utils/dbConnection.php')) {
-    require_once('../utils/dbConnection.php');
+if(file_exists('../utils/DbConnection.php')) {
+    require_once('../utils/DbConnection.php');
 }
 if(file_exists('../utils/Response.php')) {
     require_once('../utils/Response.php');
@@ -30,6 +30,10 @@ class DataController {
             } catch (mysqli_sql_exception $e) {
                 Response::error(500, "Internal Server Error");
             }
+            $response = array(
+                'success' => 'All data truncated from the database'
+            );
+            Response::send(200, $response);
         }
     }
 
@@ -46,6 +50,10 @@ class DataController {
             } catch (mysqli_sql_exception $e) {
                 Response::error(500, "Internal Server Error");
             }
+            $response = array(
+                'success' => 'Data seeded into the database'
+            );
+            Response::send(200, $response);
         }
     }
 
